@@ -1,0 +1,11 @@
+.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.d
+/.vscode
+bin/*
+!bin/h
+/src/.vscode
