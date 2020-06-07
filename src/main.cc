@@ -13,7 +13,8 @@
 
 #include "debug.h"
 
-#define ever (;;)
+#include "ncurses.h"
+
 
 uint32_t readNum(std::istream & in) {
   std::string n_str;
@@ -29,26 +30,25 @@ uint32_t readNum(std::istream & in) {
   return x;
 }
 
+void init_colors() {
+    init_pair(1, COLOR_BLACK, COLOR_WHITE);
+    init_pair(2, COLOR_WHITE, COLOR_RED);
+}
+
+
 int main(int argc, char const *argv[]) {
+
   // Check arguments
   if (argc < 2 || argc > 4) {
     std::cerr
-      << "Usage: ./mips241 <filename> [--cin] [--twoints] [--debug]"
+      << "Usage: ./mipsdbg <filename> [--twoints] [--debug]"
       << std::endl
       << std::endl
-      << "  By default, mips241 operates in `mips.array` mode."    << std::endl
+      << "  By default, mipsdbg operates in `mips.array` mode."    << std::endl
       << "  To switch to `mips.twoints` mode, pass in [--twoints]" << std::endl
       << std::endl
-      << "    --cin     : Read program from cin"          << std::endl
       << "    --twoints : operate in `mips.twoints` mode" << std::endl
       << "    --debug   : enable interactive debug mode"  << std::endl
-      << std::endl
-      << "  Known issues:"  << std::endl
-      << "    - Don't use [--debug] in conjunction with [--cin], it won't work." << std::endl
-      << "    - [--cin] mode doesn't let you input initial register values." << std::endl
-      << "        It's not that it's impossible, i'm just lazy and did not" << std::endl
-      << "        implement it yet :)" << std::endl
-      << std::endl
       << std::endl;
     return -1;
   }
@@ -77,18 +77,19 @@ int main(int argc, char const *argv[]) {
   // Open file
   std::ifstream f (filename, std::ifstream::binary);
   if (!f.is_open() && !use_cin) {
+    endwin();
     std::cerr << "Cannot open file `" << filename << "`" << std::endl;
     return -1;
   }
 
-  std::istream &bin = (use_cin) ? std::cin : f;
+  std::istream &bin = f;
 
   // Insert executable into virtual memory
 
   uint32_t memaddr = 0x0; // base memaddr
 
   char word[4];
-  for ever {
+  for (;;) {
     bin.read(word, 4);
 
     if(bin.eof()) break;
@@ -142,34 +143,69 @@ int main(int argc, char const *argv[]) {
 
   std::cerr << std::endl;
 
+  bool is_suspended = true;
+
   // Start CPU execution
   MIPS::Debugger debugger (cpu, ram, bus);
-
+  Interpreter cli;
   try {
     std::cerr << "Starting CPU..." << std::endl;
+    initscr();
+    start_color();
+    init_colors();
+    raw();
+    cbreak();
+    noecho();
     do {
-      if (use_debug_mode) debugger.debugREPL();
+
+      is_suspended = debugger.isBreakpoint(cpu.getPC());
+
+      if (use_debug_mode && is_suspended) {
+        while (is_suspended){
+
+          auto cmd = cli.GetCommand();
+          switch (cmd) {
+          case BreakpointSet:
+            break;
+          case BreakpointRemove:
+            break;
+          case WatchSet:
+            break;
+          case WatchRemove:
+            break;
+          case Peek:
+            break;
+          case Poke:
+            break;
+          case Step:
+            break;
+          case Run:
+            is_suspended = false;
+            break;
+          }
+        }
+      }
 
       // Execute cpu cycle
       cpu.do_cycle();
 
-      std::cout << bus.getOutput();
+      // std::cout << bus.getOutput();
 
     } while (cpu.stillExecuting());
-
+    endwin();
     std::cerr
       << "Execution completed successfully!"
       << std::endl;
-    debugger.printCPUState();
+    // debugger.printCPUState();
 
   } catch (const std::string & msg) {
+    endwin();
     std::cerr
       << "ERROR : "
       << msg
       << std::endl;
-    debugger.printCPUState();
+    // debugger.printCPUState();
     return -1;
   }
-
   return 0;
 }

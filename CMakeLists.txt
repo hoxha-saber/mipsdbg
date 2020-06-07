@@ -10,6 +10,7 @@ add_executable(mipsdbg src/main.cc
                        src/ram.cc
                        src/error.cc
                        src/disasm.cc
-                       src/debug.cc)
+                       src/debug.cc
+                       src/interpreter.cc)
 target_link_libraries(mipsdbg ${CURSES_LIBRARIES})
 target_compile_options(mipsdbg PRIVATE -g -Wall -std=c++14)

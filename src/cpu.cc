@@ -75,6 +75,7 @@ uint32_t MIPS::CPU::decodeOPcode(uint32_t IR) {
 /* ------------------------ CPU emulation functions ------------------------ */
 
 void MIPS::CPU::do_cycle() {
+  bool is_bp = false;
   switch (stage) {
     case S_FETCH : fetch (); break;
     case S_DECODE: decode(); break;
@@ -251,3 +252,35 @@ void MIPS::CPU::wback() {
 
   stage = S_FETCH;
 }
+
+void MIPS::CPU::do_instr() {
+
+  // finish the progress on the current instruction
+  switch(stage) {
+    case S_FETCH: break;
+    case S_DECODE:
+      decode();
+      exec();
+      memory();
+      wback();
+      break;
+    case S_EXEC:
+      exec();
+      memory();
+      wback();
+      break;
+    case S_MEMORY:
+      memory();
+      wback();
+      break;
+    case S_WBACK:
+      wback();
+      break;
+  }
+  fetch();
+  decode();
+  exec();
+  memory();
+  wback();
+}
+

@@ -89,6 +89,7 @@ namespace MIPS {
     void     setiRegister(std::string reg, uint32_t val);
 
     void do_cycle();
+    void do_instr();
   };
 }
 

@@ -7,17 +7,21 @@
 
 #include <map>
 #include <set>
+#include "ncurses.h"
+
+#include "interpreter.h"
 
 using namespace std;
 
 namespace MIPS {
   class Debugger {
   private:
-    CPU & cpu;
-    RAM & ram;
-    BUS & bus;
-
-    map<uint32_t, char> higlight; // What to higlight in RAM
+    CPU &cpu;
+    RAM &ram;
+    BUS &bus;
+    WINDOW *codeWin;
+    WINDOW *stackWin;
+    
 
     bool cycleStep; // If we want to step cycle-by-cycle
     bool step;      // If we want to step instr-by-instr
@@ -25,24 +29,23 @@ namespace MIPS {
     set<uint32_t> breakpoints; // Which addresses to break on
     set<uint32_t> watch;       // Which addresses to watch
 
-    string prevInput; // Previous REPL input
-
-    void print_CPU();
-    void print_stackRAM();
-    void print_progRAM();
-
-    void debugPrint();
 
   public:
-    Debugger(CPU & cpu, RAM & ram, BUS & bus);
+    Debugger(CPU &cpu, RAM &ram, BUS &bus);
     ~Debugger();
 
-    void printCPUState();
-    void printRAMFrom(uint32_t addr, int n);
-    void debugREPL();
+    bool isBreakpoint(uint32_t addr);
+    void setBreakpoint(uint32_t addr);
+    void removeBreakpoint(uint32_t addr);
 
-    void addhiglight(uint32_t addr);
-    void removehiglight(uint32_t addr);
+    bool isWatch(uint32_t addr);
+    void setWatch(uint32_t addr);
+    void removeWatch(uint32_t addr);
+
+    bool isDebugCycle();
+    bool isDebugStep();
+
+    bool toggleDebugMode();
   };
 }
 
