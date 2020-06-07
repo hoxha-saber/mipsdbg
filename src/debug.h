@@ -29,6 +29,9 @@ namespace MIPS {
     set<uint32_t> breakpoints; // Which addresses to break on
     set<uint32_t> watch;       // Which addresses to watch
 
+    void drawProgram();
+    void drawStack();
+    void drawMemToWin(WINDOW* win, uint32_t addr);
 
   public:
     Debugger(CPU &cpu, RAM &ram, BUS &bus);
@@ -44,6 +47,8 @@ namespace MIPS {
 
     bool isDebugCycle();
     bool isDebugStep();
+
+    void render();
 
     bool toggleDebugMode();
   };

@@ -162,7 +162,7 @@ int main(int argc, char const *argv[]) {
 
       if (use_debug_mode && is_suspended) {
         while (is_suspended){
-
+          debugger.render();
           auto cmd = cli.GetCommand();
           switch (cmd) {
           case BreakpointSet:
@@ -187,7 +187,7 @@ int main(int argc, char const *argv[]) {
       }
 
       // Execute cpu cycle
-      cpu.do_cycle();
+      cpu.do_instr();
 
       // std::cout << bus.getOutput();
 
