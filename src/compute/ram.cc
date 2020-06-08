@@ -1,5 +1,5 @@
 #include "ram.h"
-#include "error.h"
+#include "../oops.h"
 
 #include <cstdint>
 #include <sstream>
@@ -10,7 +10,7 @@ MIPS::RAM::~RAM () { for (auto entry : mem) delete [] entry.second; }
 void MIPS::RAM::store(uint32_t memaddr, uint32_t word) {
   if (memaddr % 4 != 0) {
     std::stringstream a; a << memaddr;
-    error("Unaligned Access - Cannot Store to 0x" + a.str());
+    MIPS::error("Unaligned Access - Cannot Store to 0x" + a.str());
   }
 
   uint16_t page   = (memaddr >> 16) & 0xFFFF;
@@ -26,7 +26,7 @@ void MIPS::RAM::store(uint32_t memaddr, uint32_t word) {
 uint32_t MIPS::RAM::load(uint32_t memaddr) {
   if (memaddr % 4 != 0) {
     std::stringstream a; a << memaddr;
-    error("Unaligned Access - Cannot Store to 0x" + a.str());
+    MIPS::error("Unaligned Access - Cannot Store to 0x" + a.str());
   }
 
   uint16_t page   = (memaddr >> 16) & 0xFFFF;

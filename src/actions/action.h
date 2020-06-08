@@ -1,6 +1,6 @@
 #ifndef ACTION_H
 #define ACTION_H
-#include "../debug.h"
+#include "../dbg/debug.h"
 
 class Action {
     public:

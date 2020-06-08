@@ -5,8 +5,8 @@
 #include <deque>
 #include <iostream>
 #include <memory>
-#include "actions/action.h"
-#include "scan.h"
+#include "../actions/action.h"
+#include "../scan.h"
 enum Command {
     BreakpointSet = 0,
     BreakpointRemove,

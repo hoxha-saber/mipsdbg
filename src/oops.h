@@ -4,7 +4,7 @@
 #include <string>
 
 namespace MIPS {
-  void error(std::string msg);
+  void error(const std::string &msg);
 }
 
 #endif

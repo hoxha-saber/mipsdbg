@@ -7,11 +7,11 @@
 
 #include <unistd.h>
 
-#include "ram.h"
-#include "bus.h"
-#include "cpu.h"
+#include "compute/ram.h"
+#include "compute/bus.h"
+#include "compute/cpu.h"
 
-#include "debug.h"
+#include "dbg/debug.h"
 
 #include "ncurses.h"
 
@@ -163,26 +163,26 @@ int main(int argc, char const *argv[]) {
       if (use_debug_mode && is_suspended) {
         while (is_suspended){
           debugger.render();
-          auto cmd = cli.GetCommand();
-          switch (cmd) {
-          case BreakpointSet:
-            break;
-          case BreakpointRemove:
-            break;
-          case WatchSet:
-            break;
-          case WatchRemove:
-            break;
-          case Peek:
-            break;
-          case Poke:
-            break;
-          case Step:
-            break;
-          case Run:
-            is_suspended = false;
-            break;
-          }
+          // auto cmd = cli.GetCommand();
+          // switch (cmd) {
+          // case BreakpointSet:
+          //   break;
+          // case BreakpointRemove:
+          //   break;
+          // case WatchSet:
+          //   break;
+          // case WatchRemove:
+          //   break;
+          // case Peek:
+          //   break;
+          // case Poke:
+          //   break;
+          // case Step:
+          //   break;
+          // case Run:
+          //   is_suspended = false;
+          //   break;
+          // }
         }
       }
 

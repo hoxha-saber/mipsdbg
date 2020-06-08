@@ -11,7 +11,7 @@ namespace MIPS {
     RAM();
     ~RAM();
 
-    void     store(uint32_t memaddr, uint32_t word);
+    void store(uint32_t memaddr, uint32_t word);
     uint32_t load(uint32_t memaddr);
   };
 }

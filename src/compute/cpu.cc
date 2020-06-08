@@ -1,6 +1,6 @@
 #include "cpu.h"
 #include "bus.h"
-#include "error.h"
+#include "../oops.h"
 
 
 #include <cstdint>

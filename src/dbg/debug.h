@@ -1,9 +1,9 @@
 #ifndef DEBUG_H_
 #define DEBUG_H_
 
-#include "bus.h"
-#include "ram.h"
-#include "cpu.h"
+#include "../compute/bus.h"
+#include "../compute/ram.h"
+#include "../compute/cpu.h"
 
 #include <map>
 #include <set>
