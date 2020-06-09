@@ -115,6 +115,10 @@ void Debugger::render() {
   drawStack();
 }
 
+void Debugger::pokeMem(uint32_t addr, uint32_t val) {
+  ram.store(addr, val);
+}
+
 
 
 

@@ -41,6 +41,8 @@ namespace MIPS {
     void setBreakpoint(uint32_t addr);
     void removeBreakpoint(uint32_t addr);
 
+    void pokeMem(uint32_t addr, uint32_t val);
+
     bool isWatch(uint32_t addr);
     void setWatch(uint32_t addr);
     void removeWatch(uint32_t addr);
