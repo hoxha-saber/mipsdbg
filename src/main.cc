@@ -109,6 +109,8 @@ int main(int argc, char const *argv[]) {
     memaddr += 4;
   }
 
+  ram.setEndAddr(memaddr + 4); // mark where the executable ends;
+
   // Accept user input
   if (use_twoints) {
     // Let user input 2 integers
@@ -143,7 +145,6 @@ int main(int argc, char const *argv[]) {
 
   std::cerr << std::endl;
 
-  bool is_suspended = true;
 
   // Start CPU execution
   MIPS::Debugger debugger (cpu, ram, bus);
@@ -158,31 +159,11 @@ int main(int argc, char const *argv[]) {
     noecho();
     do {
 
-      is_suspended = debugger.isBreakpoint(cpu.getPC());
-
-      if (use_debug_mode && is_suspended) {
-        while (is_suspended){
+      if (use_debug_mode && debugger.isBreakpoint(cpu.getPC())) {
+        while (debugger.isSuspended()){
           debugger.render();
-          // auto cmd = cli.GetCommand();
-          // switch (cmd) {
-          // case BreakpointSet:
-          //   break;
-          // case BreakpointRemove:
-          //   break;
-          // case WatchSet:
-          //   break;
-          // case WatchRemove:
-          //   break;
-          // case Peek:
-          //   break;
-          // case Poke:
-          //   break;
-          // case Step:
-          //   break;
-          // case Run:
-          //   is_suspended = false;
-          //   break;
-          // }
+          auto p = cli.GetAction();
+          p->Execute(debugger);
         }
       }
 

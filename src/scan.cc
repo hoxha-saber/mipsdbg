@@ -8,8 +8,12 @@ std::unique_ptr<Action> scan(std::string &line) {
         uint32_t arg1 = std::stoi(tokens[1]);
         uint32_t arg2 = std::stoi(tokens[2]);
         if (tokens[0] == POKE_T) {
+            // usage: poke $5 3
+            //        poke 0x23 17
             // determine if its address or register
-            return std::make_unique<PokeAction>(arg1, arg2);
+            bool isReg = false;
+            tokens[1][0] == '$' ? isReg = true : isReg =  false;
+            return std::make_unique<PokeAction>(arg1, arg2, isReg);
         }
     }
 
@@ -19,16 +23,18 @@ std::unique_ptr<Action> scan(std::string &line) {
             return std::make_unique<BreakpointAction>(arg);
         }
         else if (tokens[0] == BREAKPOINTREM_T) {
-
+            return std::make_unique<BreakpointRemoveAction>(arg);
         }
         else if (tokens[0] == WATCHADD_T) {
-            // determine if its address or register
+            return std::make_unique<WatchAction>(arg);
         }
         else if (tokens[0] == WATCHREM_T) {
-
+            return std::make_unique<WatchRemoveAction>(arg);
         }
         else if (tokens[0] == PEEK_T) {
-
+            bool isReg = false;
+            tokens[1][0] == '$' ? isReg = true : isReg = false;
+            return std::make_unique<PeekAction>(arg, isReg);
         }
         else {
             return nullptr;
@@ -36,10 +42,10 @@ std::unique_ptr<Action> scan(std::string &line) {
     }
     else if (tokens.size() == 1) {
         if (tokens[0] == NEXT_T) {
-
+            return std::make_unique<NextAction>();
         }
         else if (tokens[0] == RUN_T) {
-
+            return std::make_unique<RunAction>();
         }
         else {
             return nullptr;

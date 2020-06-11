@@ -30,7 +30,7 @@ Debugger::Debugger(CPU &cpu, RAM &ram, BUS &bus)
 {
 
   cycleStep = false;
-
+  is_suspended = true;
   step = false;
 
   // Break at the start of the program
@@ -118,6 +118,19 @@ void Debugger::render() {
 void Debugger::pokeMem(uint32_t addr, uint32_t val) {
   ram.store(addr, val);
 }
+
+void Debugger::pokeReg(uint32_t addr, uint32_t val) {
+  cpu.setRegister(static_cast<int>(addr), val);
+}
+
+bool Debugger::isSuspended(){
+  return is_suspended;
+}
+
+void Debugger::setSuspension(bool res) {
+  is_suspended = res;
+}
+
 
 
 

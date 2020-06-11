@@ -1,7 +1,7 @@
 #include "poke.h"
 
-PokeAction::PokeAction(uint32_t x, uint32_t y) : addr{x}, val{y} {}
+PokeAction::PokeAction(uint32_t x, uint32_t y, bool isReg) : addr{x}, val{y} {}
 
 void PokeAction::Execute(MIPS::Debugger &dbg) {
-    dbg.pokeMem(addr, val);
+    is_reg ? dbg.pokeMem(addr, val) : dbg.pokeReg(addr, val);
 }

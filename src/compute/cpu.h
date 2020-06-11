@@ -22,7 +22,7 @@ namespace MIPS {
     uint32_t lo;
 
     // Memory interface
-    BUS & MEM;
+    BUS &MEM;
 
     // ---- Control Variables ---- //
     enum Stage {

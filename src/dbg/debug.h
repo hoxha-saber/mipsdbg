@@ -29,6 +29,8 @@ namespace MIPS {
     set<uint32_t> breakpoints; // Which addresses to break on
     set<uint32_t> watch;       // Which addresses to watch
 
+    bool is_suspended;
+
     void drawProgram();
     void drawStack();
     void drawMemToWin(WINDOW* win, uint32_t addr);
@@ -42,6 +44,7 @@ namespace MIPS {
     void removeBreakpoint(uint32_t addr);
 
     void pokeMem(uint32_t addr, uint32_t val);
+    void pokeReg(uint32_t reg, uint32_t val);
 
     bool isWatch(uint32_t addr);
     void setWatch(uint32_t addr);
@@ -53,6 +56,9 @@ namespace MIPS {
     void render();
 
     bool toggleDebugMode();
+
+    bool isSuspended();
+    void setSuspension(bool res);
   };
 }
 

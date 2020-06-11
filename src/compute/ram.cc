@@ -38,3 +38,11 @@ uint32_t MIPS::RAM::load(uint32_t memaddr) {
 
   return mem[page][offset / 4];
 }
+
+void MIPS::RAM::setEndAddr(uint32_t memaddr) {
+  endaddr = memaddr;
+}
+
+uint32_t MIPS::RAM::getEndAddr() {
+  return endaddr;
+}
